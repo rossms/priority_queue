@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 String new_str = input.getText().toString();
                 Integer len = sortPQ.size();
                 sortPQ.add(new Entry(len+1, new_str));
+                input.setText("");
             }
         });
         assert doneButton !=null;
