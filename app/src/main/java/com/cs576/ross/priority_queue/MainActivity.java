@@ -8,17 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    pqueueSorter pqs = new pqueueSorter();
+    PqueueSorter pqs = new PqueueSorter();
     PriorityQueue<Integer> initPQ = new PriorityQueue<Integer>();
     PriorityQueue<Entry> sortPQ = new PriorityQueue<Entry>(10, new OrderedComparator());
     @Override
@@ -37,10 +32,13 @@ public class MainActivity extends AppCompatActivity {
         final Button addButton = (Button) findViewById(R.id.add);
         final Button extractMaxButton = (Button) findViewById(R.id.extractMax);
         final Button addToQueue = (Button) findViewById(R.id.insert);
+        assert addToQueue != null;
         addToQueue.setVisibility(View.GONE);
         final EditText input = (EditText) findViewById(R.id.editText);
+        assert input != null;
         input.setVisibility(View.GONE);
         final Button doneButton = (Button) findViewById(R.id.done);
+        assert doneButton != null;
         doneButton.setVisibility(View.GONE);
 
         assert maxButton != null;
@@ -71,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         addToQueue.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Random rand = new Random();
                 String new_str = input.getText().toString();
                 Integer len = sortPQ.size();
                 sortPQ.add(new Entry(len+1, new_str));
@@ -99,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void initializeQueue() {
         //int[] in = {4, 5, 3, 10, 9, 6, 7, 1};
-        int[] in = {};
+        int[] in;
        /* for(int x:in){
             initPQ.offer(x);
         }
