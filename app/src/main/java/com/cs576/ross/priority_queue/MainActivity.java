@@ -8,13 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.PriorityQueue;
 
 public class MainActivity extends AppCompatActivity {
-
-    PqueueSorter pqs = new PqueueSorter();
-    PriorityQueue<Integer> initPQ = new PriorityQueue<Integer>();
     PriorityQueue<Entry> sortPQ = new PriorityQueue<Entry>(10, new OrderedComparator());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +35,19 @@ public class MainActivity extends AppCompatActivity {
         final EditText input = (EditText) findViewById(R.id.editText);
         assert input != null;
         input.setVisibility(View.GONE);
+        final EditText priorityInput = (EditText) findViewById(R.id.priorityInput);
+        assert priorityInput != null;
+        priorityInput.setVisibility(View.GONE);
         final Button doneButton = (Button) findViewById(R.id.done);
         assert doneButton != null;
         doneButton.setVisibility(View.GONE);
+        final TextView valueText = (TextView) findViewById(R.id.valueText);
+        assert valueText !=null;
+        valueText.setVisibility(View.GONE);
+        final TextView priorityText = (TextView) findViewById(R.id.priorityText);
+        assert priorityText !=null;
+        priorityText.setVisibility(View.GONE);
+
 
         assert maxButton != null;
         maxButton.setOnClickListener(new View.OnClickListener(){
@@ -62,7 +70,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 addToQueue.setVisibility(View.VISIBLE);
                 input.setVisibility(View.VISIBLE);
+                priorityInput.setVisibility(View.VISIBLE);
                 doneButton.setVisibility(View.VISIBLE);
+                valueText.setVisibility(View.VISIBLE);
+                priorityText.setVisibility(View.VISIBLE);
             }
         });
         assert addToQueue !=null;
@@ -70,9 +81,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 String new_str = input.getText().toString();
-                Integer len = sortPQ.size();
-                sortPQ.add(new Entry(len+1, new_str));
+                Integer priority = Integer.parseInt(priorityInput.getText().toString());
+                sortPQ.add(new Entry(priority, new_str));
                 input.setText("");
+                priorityInput.setText("");
             }
         });
         assert doneButton !=null;
@@ -81,14 +93,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 addToQueue.setVisibility(View.GONE);
                 input.setVisibility(View.GONE);
+                priorityInput.setVisibility(View.GONE);
                 doneButton.setVisibility(View.GONE);
+                valueText.setVisibility(View.GONE);
+                priorityText.setVisibility(View.GONE);
             }
         });
         assert extractMaxButton !=null;
         extractMaxButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                String exMax = sortPQ.poll().getValue();
+                String exMax = (String)sortPQ.poll().getValue();
                 showAlertDialog("Alert", "Extract max: " + exMax, MainActivity.this);
             }
         });
@@ -100,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
        /* for(int x:in){
             initPQ.offer(x);
         }
-
-
         for(int x:in){
             sortPQ.offer(x);
         }
@@ -110,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private String max(){
         System.out.println("max " + sortPQ.peek());
-        return sortPQ.peek().getValue();
+        return (String)sortPQ.peek().getValue();
     }
 
     public void showAlertDialog(String title, String message, Context context)
